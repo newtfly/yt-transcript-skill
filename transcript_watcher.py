@@ -1,4 +1,4 @@
-"""
+﻿"""
 transcript_watcher.py  —  YouTube transcript clipboard watcher
 Sits in the system tray. When you copy a YouTube URL, it automatically
 fetches the transcript and saves it to the transcripts/ folder.
@@ -100,14 +100,24 @@ def fetch_transcript(url):
         if result.returncode == 0:
             saved_path = result.stdout.strip().splitlines()[-1] if result.stdout.strip() else ""
             filename   = Path(saved_path).name if saved_path else "transcript"
-            notify("✅ Transcript saved", filename)
+            # Check if this was a duplicate (script warned but exited 0)
+            if "You already have this transcript" in result.stderr:
+                # Pull the title line from stderr for a friendlier message
+                title_line = ""
+                for line in result.stderr.splitlines():
+                    if "Title:" in line:
+                        title_line = line.strip().replace("Title:", "").strip()
+                        break
+                notify("Already saved", f"{title_line[:60]}" if title_line else filename)
+            else:
+                notify("Transcript saved", filename)
         else:
             err = result.stderr.strip().splitlines()[-1] if result.stderr else "Unknown error"
-            notify("❌ Transcript failed", err[:80])
+            notify("Transcript failed", err[:80])
     except subprocess.TimeoutExpired:
-        notify("❌ Transcript timed out", url[:60])
+        notify("Transcript timed out", url[:60])
     except Exception as e:
-        notify("❌ Transcript error", str(e)[:80])
+        notify("Transcript error", str(e)[:80])
     finally:
         active_jobs -= 1
         if tray_icon and active_jobs == 0:
@@ -126,7 +136,7 @@ def clipboard_loop():
                 url = match.group(1)
                 if url != last_seen_url:
                     last_seen_url = url
-                    notify("📋 YouTube URL detected", "Fetching transcript…")
+                    notify("YouTube URL detected", "Fetching transcript…")
                     threading.Thread(target=fetch_transcript, args=(url,), daemon=True).start()
         except Exception:
             pass
