@@ -53,7 +53,7 @@ python yt_transcript.py VIDEOID --print
 
 Transcripts are saved to the `transcripts/` subfolder with names like:
 ```
-20260528_WIDIV8oDDC8_agentic-engineering-workflow.txt
+20260528_dQw4w9WgXcQ_how-to-learn-anything-fast.txt
 ```
 
 ## Notes
