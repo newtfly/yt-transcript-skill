@@ -34,10 +34,24 @@ The watcher also needs `pystray`, `Pillow`, and `pyperclip` (installed automatic
 
 ## Usage
 
-**Command line:**
+**Fetch a transcript:**
 ```
 python yt_transcript.py https://youtu.be/VIDEOID
+```
+
+**See all your saved transcripts:**
+```
+python yt_transcript.py --list
+```
+
+**Print transcript to screen instead of saving:**
+```
 python yt_transcript.py VIDEOID --print
+```
+
+**Force a fresh copy of a video you already have:**
+```
+python yt_transcript.py VIDEOID --force
 ```
 
 **Double-click:**
@@ -48,6 +62,15 @@ python yt_transcript.py VIDEOID --print
 **Background watcher:**
 1. Run `install_watcher.bat` once
 2. After that, just copy any YouTube URL — transcript saves automatically, you get a Windows notification
+
+## Duplicate protection
+
+If you try to fetch a video you already have, the script will stop and remind you:
+- What the video was called
+- When you saved it
+- Where the file is
+
+Add `--force` to fetch a fresh copy anyway.
 
 ## Output
 
