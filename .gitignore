@@ -1,0 +1,10 @@
+# Don't upload saved transcripts — personal content, stays local
+transcripts/
+
+# Python cache files
+__pycache__/
+*.pyc
+
+# Windows junk
+Thumbs.db
+desktop.ini
